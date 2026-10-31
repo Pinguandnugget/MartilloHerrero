@@ -1,13 +1,13 @@
 package com.potitosafio.herrero;
 
 import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
@@ -23,14 +23,12 @@ public final class HerreroPlugin extends JavaPlugin implements Listener {
     private boolean ready(Player p) {
         long now = System.currentTimeMillis();
         Long last = cooldown.get(p.getUniqueId());
-        if (last != null && now - last < 1000) return false;
-        return true;
+        return last == null || now - last >= 1000;
     }
     private boolean charge(Player p) {
         int level = p.getLevel();
         float progress = p.getExp();
         int perLevel = level >= 30 ? 9 * level - 158 : level >= 15 ? 5 * level - 38 : 2 * level + 7;
-        // Consume exactamente un punto de experiencia, sin quitar un nivel entero.
         if (level == 0 && progress * perLevel < 0.999f) return false;
         if (progress * perLevel >= 0.999f) {
             p.setExp(Math.max(0f, (progress * perLevel - 1f) / perLevel));
