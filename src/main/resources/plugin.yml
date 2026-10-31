@@ -1,0 +1,5 @@
+name: MartilloDelHerrero
+version: '1.0.0'
+main: com.potitosafio.herrero.HerreroPlugin
+api-version: '1.21'
+author: PotitoSafio
